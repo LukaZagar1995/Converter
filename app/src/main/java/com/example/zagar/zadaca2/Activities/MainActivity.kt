@@ -3,7 +3,7 @@ package com.example.zagar.zadaca2.Activities
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.example.zagar.zadaca2.Classes.BtnKeys.*
+import com.example.zagar.zadaca2.Constants.ButtonKeys.*
 import com.example.zagar.zadaca2.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         btnWeightConversion.setOnClickListener{
             val intent = Intent (this, ConversionActivity::class.java)
-            intent.putExtra(KEY_BUTTON_IDENTIFIER, KEY_WEIGHT)
+            intent.putExtra(KEY_BUTTON_IDENTIFIER, KEY_MASS)
             startActivity(intent)
         }
 

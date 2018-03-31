@@ -16,7 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ConversionActivity" />
+
+        <activity android:name=".Activities.ConversionActivity"
+            android:parentActivityName=".Activities.MainActivity">
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".Activities.ConversionActivity"/>
+        </activity>
+
         <activity android:name=".Activities.ResultActivity"></activity>
     </application>
 
