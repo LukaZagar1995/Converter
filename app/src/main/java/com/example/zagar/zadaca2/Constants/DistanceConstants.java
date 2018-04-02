@@ -2,11 +2,18 @@ package com.example.zagar.zadaca2.Constants;
 
 public interface DistanceConstants {
 
-    String UNIT_METERS = "Meters(m)";
-    String UNIT_INCHES = "Inches(″)";
-    String UNIT_NAUTICAL_MILES = "Nautical miles(nmi)";
-    String UNIT_MILES = "Miles(mi)";
-    String UNIT_FEET = "Feet(′)";
+    String UNIT_METERS = "Meters";
+    String UNIT_INCHES = "Inches";
+    String UNIT_NAUTICAL_MILES = "Nautical miles";
+    String UNIT_MILES = "Miles";
+    String UNIT_FEET = "Feet";
+    String UNIT_METERS_SHORT = "m";
+    String UNIT_INCHES_SHORT = "″";
+    String UNIT_NAUTICAL_MILES_SHORT = "nmi";
+    String UNIT_MILES_SHORT = "mi";
+    String UNIT_FEET_SHORT = "′";
+
+    String DISTANCE_COLOR = "#2E8B57";
 
     double RATIO_INCHES_TO_METERS = 0.0254;
     double RATIO_NAUTICAL_MILES_TO_METERS = 1852;

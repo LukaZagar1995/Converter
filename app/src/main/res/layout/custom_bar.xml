@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar_top"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize" >
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:src="@drawable/temperature_image"
+            android:layout_marginRight="?attr/actionBarSize"
+            android:layout_gravity="center"
+            android:id="@+id/toolbar_title"
+            android:layout_marginEnd="?attr/actionBarSize" />
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+

@@ -25,7 +25,13 @@
             android:value=".Activities.ConversionActivity"/>
         </activity>
 
-        <activity android:name=".Activities.ResultActivity"></activity>
+        <activity android:name=".Activities.ResultActivity"
+            android:parentActivityName=".Activities.ConversionActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activities.ResultActivity"/>
+        </activity>
     </application>
 
 </manifest>
