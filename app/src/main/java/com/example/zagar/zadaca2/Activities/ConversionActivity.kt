@@ -17,31 +17,38 @@ import com.example.zagar.zadaca2.R
 import kotlinx.android.synthetic.main.activity_conversion.*
 import kotlinx.android.synthetic.main.custom_bar.*
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-
-
-
-
+import com.example.zagar.zadaca2.models.Input
+import com.example.zagar.zadaca2.models.Output
+import com.example.zagar.zadaca2.temperature.TemperatureViewModel
+import com.example.zagar.zadaca2.utils.TemperatureConverter
 
 
 class ConversionActivity : AppCompatActivity(){
 
+    private val TAG = "ConversionActivity"
+
     private val KEY_BUTTON_IDENTIFIER: String? = "button"
     private val FORMAT_LIST: String? = " - "
-    private var speedConversionList = arrayOf(UNIT_KILOMETERS_PER_HOUR_SHORT + FORMAT_LIST + UNIT_KILOMETERS_PER_HOUR,
+    private val speedConversionList = arrayOf(UNIT_KILOMETERS_PER_HOUR_SHORT + FORMAT_LIST + UNIT_KILOMETERS_PER_HOUR,
                                         UNIT_MILES_PER_HOUR_SHORT + FORMAT_LIST + UNIT_MILES_PER_HOUR, UNIT_METERS_PER_SECOND_SHORT + FORMAT_LIST + UNIT_METERS_PER_SECOND,
                                         UNIT_KNOTS_SHORT + FORMAT_LIST + UNIT_KNOTS)
-    private var temperatureConversionList = arrayOf(UNIT_CELSIUS_SHORT + FORMAT_LIST + UNIT_CELSIUS, UNIT_KELVIN_SHORT + FORMAT_LIST + UNIT_KELVIN,
+    private val temperatureConversionList = arrayOf(UNIT_CELSIUS_SHORT + FORMAT_LIST + UNIT_CELSIUS, UNIT_KELVIN_SHORT + FORMAT_LIST + UNIT_KELVIN,
                                         UNIT_FAHRENHEIT_SHORT + FORMAT_LIST + UNIT_FAHRENHEIT)
-    private var distanceConversionList = arrayOf(UNIT_METERS_SHORT + FORMAT_LIST + UNIT_METERS, UNIT_MILES_SHORT + FORMAT_LIST + UNIT_MILES,
+    private val distanceConversionList = arrayOf(UNIT_METERS_SHORT + FORMAT_LIST + UNIT_METERS, UNIT_MILES_SHORT + FORMAT_LIST + UNIT_MILES,
                                         UNIT_NAUTICAL_MILES_SHORT + FORMAT_LIST + UNIT_NAUTICAL_MILES, UNIT_FEET_SHORT + FORMAT_LIST + UNIT_FEET ,
                                         UNIT_INCHES_SHORT + FORMAT_LIST + UNIT_INCHES)
-    private var massConversionList = arrayOf(UNIT_KILOGRAMS_SHORT + FORMAT_LIST + UNIT_KILOGRAMS, UNIT_TON_SHORT + FORMAT_LIST + UNIT_TON,
+    private val massConversionList = arrayOf(UNIT_KILOGRAMS_SHORT + FORMAT_LIST + UNIT_KILOGRAMS, UNIT_TON_SHORT + FORMAT_LIST + UNIT_TON,
                                         UNIT_POUND_SHORT + FORMAT_LIST + UNIT_POUND, UNIT_OUNCE_SHORT + FORMAT_LIST + UNIT_OUNCE)
     private var conversionUnit:Double = 0.0
+    private val tempConverter = TemperatureConverter()
+    private val temperatureViewModel = TemperatureViewModel(tempConverter)
+    private val testInput = Input("Tip1", 10.0)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +56,14 @@ class ConversionActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_conversion)
         setUpUI(clConversionActivity)
+
+//        temperatureViewModel.output().observe(this, Observer<Output> { output: Output? ->
+//            updateUI(output)
+//        })
+
         btnConvert.setOnClickListener{
+            if(etValue.text.isEmpty())
+                return@setOnClickListener
             val startingIntent = intent
             when(startingIntent.getStringExtra(KEY_BUTTON_IDENTIFIER))
             {
@@ -161,7 +175,9 @@ class ConversionActivity : AppCompatActivity(){
                 supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor(MASS_COLOR)))
 
             }
+
         }
+
 
         if (view !is EditText) {
             view.setOnTouchListener({ _, _ ->
@@ -170,17 +186,18 @@ class ConversionActivity : AppCompatActivity(){
             })
         }
 
-        if (view is ViewGroup) {
-            for (i in 0 until view.childCount) {
-                val innerView = view.getChildAt(i)
-                setUpUI(innerView)
-            }
-        }
+//        if (view is ViewGroup) {
+//            for (i in 0 until view.childCount) {
+//                val innerView = view.getChildAt(i)
+//                setUpUI(innerView)
+//            }
+//        }
     }
+
+
 
     private fun convertToMeters():Double
     {
-
         when(spConversionUnit.selectedItem)
         {
             UNIT_INCHES_SHORT + FORMAT_LIST + UNIT_INCHES ->  return etValue.text.toString().toDouble() * RATIO_INCHES_TO_METERS
@@ -286,9 +303,9 @@ class ConversionActivity : AppCompatActivity(){
     {
         when(spConvertedUnit.selectedItem)
         {
-            UNIT_KELVIN_SHORT + FORMAT_LIST + UNIT_KELVIN -> return    conversionUnit - ZERO_KELVIN_TO_CELSIUS
+            UNIT_KELVIN_SHORT + FORMAT_LIST + UNIT_KELVIN -> tempConverter.celsiusToKelvin(conversionUnit)
 
-            UNIT_FAHRENHEIT_SHORT + FORMAT_LIST + UNIT_FAHRENHEIT ->  return   conversionUnit * FAHRENHEIT_FORMULA_VALUE1 + FAHRENHEIT_FORMULA_VALUE2
+            UNIT_FAHRENHEIT_SHORT + FORMAT_LIST + UNIT_FAHRENHEIT ->  tempConverter.celsiusToFahrenheit(conversionUnit)
 
         }
 
