@@ -3,11 +3,10 @@ package com.example.zagar.zadaca2.Activities
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.example.zagar.zadaca2.Constants.ButtonKeys.*
 import com.example.zagar.zadaca2.Constants.DistanceConstants.*
 import com.example.zagar.zadaca2.Constants.SpeedConstants.*
