@@ -17,30 +17,22 @@ import com.example.zagar.zadaca2.R
 import kotlinx.android.synthetic.main.activity_conversion.*
 import kotlinx.android.synthetic.main.custom_bar.*
 import android.app.Activity
+import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
-
-
-
-
-
 
 class ConversionActivity : AppCompatActivity(){
 
     private val KEY_BUTTON_IDENTIFIER: String? = "button"
-    private val FORMAT_LIST: String? = " - "
-    private var speedConversionList = arrayOf(UNIT_KILOMETERS_PER_HOUR_SHORT + FORMAT_LIST + UNIT_KILOMETERS_PER_HOUR,
-                                        UNIT_MILES_PER_HOUR_SHORT + FORMAT_LIST + UNIT_MILES_PER_HOUR, UNIT_METERS_PER_SECOND_SHORT + FORMAT_LIST + UNIT_METERS_PER_SECOND,
-                                        UNIT_KNOTS_SHORT + FORMAT_LIST + UNIT_KNOTS)
-    private var temperatureConversionList = arrayOf(UNIT_CELSIUS_SHORT + FORMAT_LIST + UNIT_CELSIUS, UNIT_KELVIN_SHORT + FORMAT_LIST + UNIT_KELVIN,
-                                        UNIT_FAHRENHEIT_SHORT + FORMAT_LIST + UNIT_FAHRENHEIT)
-    private var distanceConversionList = arrayOf(UNIT_METERS_SHORT + FORMAT_LIST + UNIT_METERS, UNIT_MILES_SHORT + FORMAT_LIST + UNIT_MILES,
-                                        UNIT_NAUTICAL_MILES_SHORT + FORMAT_LIST + UNIT_NAUTICAL_MILES, UNIT_FEET_SHORT + FORMAT_LIST + UNIT_FEET ,
-                                        UNIT_INCHES_SHORT + FORMAT_LIST + UNIT_INCHES)
-    private var massConversionList = arrayOf(UNIT_KILOGRAMS_SHORT + FORMAT_LIST + UNIT_KILOGRAMS, UNIT_TON_SHORT + FORMAT_LIST + UNIT_TON,
-                                        UNIT_POUND_SHORT + FORMAT_LIST + UNIT_POUND, UNIT_OUNCE_SHORT + FORMAT_LIST + UNIT_OUNCE)
+    private val KEY_INPUT_UNIT: String? = "input type"
+    private val KEY_OUTPUT_UNIT: String? = "output type"
+    private val KEY_INPUT_VALUE: String? = "input value"
+    private val KEY_OUTPUT_VALUE: String? = "output value"
+    private var speedConversionList = arrayOf(UNIT_KILOMETERS_PER_HOUR_LIST_ITEM, UNIT_METERS_PER_SECOND_LIST_ITEM, UNIT_MILES_PER_HOUR_LIST_ITEM, UNIT_KNOTS_LIST_ITEM)
+    private val temperatureConversionList = arrayOf(UNIT_CELSIUS_LIST_ITEM, UNIT_FAHRENHEIT_LIST_ITEM, UNIT_KELVIN_LIST_ITEM)
+    private val distanceConversionList = arrayOf(UNIT_METERS_LIST_ITEM, UNIT_INCHES_LIST_ITEM, UNIT_NAUTICAL_MILES_LIST_ITEM, UNIT_MILES_LIST_ITEM, UNIT_FEET_LIST_ITEM)
+    private val massConversionList = arrayOf(UNIT_KILOGRAMS_LIST_ITEM, UNIT_POUND_LIST_ITEM, UNIT_OUNCE_LIST_ITEM, UNIT_TON_LIST_ITEM)
     private var conversionUnit:Double = 0.0
 
 
@@ -50,33 +42,38 @@ class ConversionActivity : AppCompatActivity(){
         setContentView(R.layout.activity_conversion)
         setUpUI(clConversionActivity)
         btnConvert.setOnClickListener{
+            if(etValue.text.isEmpty())
+                return@setOnClickListener
+            val value:Double = etValue.text.toString().toDouble()
+            var resultIntent = Intent ( this, ResultActivity::class.java)
             val startingIntent = intent
             when(startingIntent.getStringExtra(KEY_BUTTON_IDENTIFIER))
             {
                 KEY_DISTANCE -> {
                     conversionUnit = convertToMeters()
                     conversionUnit = covertToDistanceUnitMeasurement(conversionUnit)
-                    Toast.makeText(this, "%.3f".format(conversionUnit), Toast.LENGTH_SHORT).show()
+                    resultIntent = setUpIntent(conversionUnit, KEY_DISTANCE, value)
                 }
 
                 KEY_SPEED ->{
                     conversionUnit = convertToKilometersPerHour()
                     conversionUnit = convertToSpeedUnitMeasurement(conversionUnit)
-                    Toast.makeText(this, "%.3f".format(conversionUnit), Toast.LENGTH_SHORT).show()
+                    resultIntent = setUpIntent(conversionUnit, KEY_SPEED, value)
                 }
 
                 KEY_MASS ->{
                     conversionUnit = convertToKilograms()
                     conversionUnit = convertToMassUnitMeasurement(conversionUnit)
-                    Toast.makeText(this, "%.3f".format(conversionUnit), Toast.LENGTH_SHORT).show()
+                    resultIntent = setUpIntent(conversionUnit, KEY_MASS,value)
                 }
 
                 KEY_TEMPERATURE ->{
                     conversionUnit = convertToCelsius()
                     conversionUnit = convertToTemperatureUnitMeasurement(conversionUnit)
-                    Toast.makeText(this, "%.3f".format(conversionUnit), Toast.LENGTH_SHORT).show()
+                    resultIntent = setUpIntent(conversionUnit, KEY_TEMPERATURE,value)
                 }
             }
+            startActivity(resultIntent)
         }
 
     }
@@ -170,12 +167,6 @@ class ConversionActivity : AppCompatActivity(){
             })
         }
 
-        if (view is ViewGroup) {
-            for (i in 0 until view.childCount) {
-                val innerView = view.getChildAt(i)
-                setUpUI(innerView)
-            }
-        }
     }
 
     private fun convertToMeters():Double
@@ -183,13 +174,13 @@ class ConversionActivity : AppCompatActivity(){
 
         when(spConversionUnit.selectedItem)
         {
-            UNIT_INCHES_SHORT + FORMAT_LIST + UNIT_INCHES ->  return etValue.text.toString().toDouble() * RATIO_INCHES_TO_METERS
+            UNIT_INCHES_LIST_ITEM ->  return etValue.text.toString().toDouble() * RATIO_INCHES_TO_METERS
 
-            UNIT_MILES_SHORT + FORMAT_LIST + UNIT_MILES ->   return etValue.text.toString().toDouble() * RATIO_MILES_TO_METERS
+            UNIT_MILES_LIST_ITEM ->   return etValue.text.toString().toDouble() * RATIO_MILES_TO_METERS
 
-            UNIT_FEET_SHORT + FORMAT_LIST + UNIT_FEET  ->  return etValue.text.toString().toDouble() * RATIO_FEET_TO_METERS
+            UNIT_FEET_LIST_ITEM  ->  return etValue.text.toString().toDouble() * RATIO_FEET_TO_METERS
 
-            UNIT_NAUTICAL_MILES_SHORT + FORMAT_LIST + UNIT_NAUTICAL_MILES ->  return etValue.text.toString().toDouble() * RATIO_NAUTICAL_MILES_TO_METERS
+            UNIT_NAUTICAL_MILES_LIST_ITEM ->  return etValue.text.toString().toDouble() * RATIO_NAUTICAL_MILES_TO_METERS
         }
 
         return  etValue.text.toString().toDouble()
@@ -199,13 +190,13 @@ class ConversionActivity : AppCompatActivity(){
     {
         when(spConvertedUnit.selectedItem)
         {
-            UNIT_INCHES_SHORT + FORMAT_LIST + UNIT_INCHES -> return    conversionUnit / RATIO_INCHES_TO_METERS
+            UNIT_INCHES_LIST_ITEM -> return    conversionUnit / RATIO_INCHES_TO_METERS
 
-            UNIT_MILES_SHORT + FORMAT_LIST + UNIT_MILES ->  return   conversionUnit / RATIO_MILES_TO_METERS
+            UNIT_MILES_LIST_ITEM ->  return   conversionUnit / RATIO_MILES_TO_METERS
 
-            UNIT_FEET_SHORT + FORMAT_LIST + UNIT_FEET  ->  return   conversionUnit / RATIO_FEET_TO_METERS
+            UNIT_FEET_LIST_ITEM  ->  return   conversionUnit / RATIO_FEET_TO_METERS
 
-            UNIT_NAUTICAL_MILES_SHORT + FORMAT_LIST + UNIT_NAUTICAL_MILES ->  return   conversionUnit / RATIO_NAUTICAL_MILES_TO_METERS
+            UNIT_NAUTICAL_MILES_LIST_ITEM ->  return   conversionUnit / RATIO_NAUTICAL_MILES_TO_METERS
         }
 
         return conversionUnit
@@ -215,11 +206,11 @@ class ConversionActivity : AppCompatActivity(){
     {
         when(spConversionUnit.selectedItem)
         {
-            UNIT_METERS_PER_SECOND_SHORT + FORMAT_LIST + UNIT_METERS_PER_SECOND -> return etValue.text.toString().toDouble() * RATIO_METERS_PER_SECOND_TO_KILOMETERS_PER_HOUR
+            UNIT_METERS_PER_SECOND_LIST_ITEM -> return etValue.text.toString().toDouble() * RATIO_METERS_PER_SECOND_TO_KILOMETERS_PER_HOUR
 
-            UNIT_MILES_PER_HOUR_SHORT + FORMAT_LIST + UNIT_MILES_PER_HOUR -> return etValue.text.toString().toDouble() * RATIO_MILES_PER_HOUR_TO_KILOMETERS_PER_HOUR
+            UNIT_MILES_PER_HOUR_LIST_ITEM -> return etValue.text.toString().toDouble() * RATIO_MILES_PER_HOUR_TO_KILOMETERS_PER_HOUR
 
-            UNIT_KNOTS_SHORT + FORMAT_LIST + UNIT_KNOTS -> return etValue.text.toString().toDouble() * RATIO_KNOTS_TO_KILOMETERS_PER_HOUR
+            UNIT_KNOTS_LIST_ITEM -> return etValue.text.toString().toDouble() * RATIO_KNOTS_TO_KILOMETERS_PER_HOUR
 
         }
 
@@ -230,11 +221,11 @@ class ConversionActivity : AppCompatActivity(){
     {
         when(spConvertedUnit.selectedItem)
         {
-            UNIT_METERS_PER_SECOND_SHORT + FORMAT_LIST + UNIT_METERS_PER_SECOND -> return    conversionUnit / RATIO_METERS_PER_SECOND_TO_KILOMETERS_PER_HOUR
+            UNIT_METERS_PER_SECOND_LIST_ITEM -> return    conversionUnit / RATIO_METERS_PER_SECOND_TO_KILOMETERS_PER_HOUR
 
-            UNIT_MILES_PER_HOUR_SHORT + FORMAT_LIST + UNIT_MILES_PER_HOUR ->  return   conversionUnit / RATIO_MILES_PER_HOUR_TO_KILOMETERS_PER_HOUR
+            UNIT_MILES_PER_HOUR_LIST_ITEM ->  return   conversionUnit / RATIO_MILES_PER_HOUR_TO_KILOMETERS_PER_HOUR
 
-            UNIT_KNOTS_SHORT + FORMAT_LIST + UNIT_KNOTS -> return   conversionUnit / RATIO_KNOTS_TO_KILOMETERS_PER_HOUR
+            UNIT_KNOTS_LIST_ITEM -> return   conversionUnit / RATIO_KNOTS_TO_KILOMETERS_PER_HOUR
         }
 
         return conversionUnit
@@ -244,11 +235,11 @@ class ConversionActivity : AppCompatActivity(){
     {
         when(spConversionUnit.selectedItem)
         {
-            UNIT_POUND_SHORT + FORMAT_LIST + UNIT_POUND -> return etValue.text.toString().toDouble() * RATIO_POUND_TO_KILOGRAMS
+            UNIT_POUND_LIST_ITEM -> return etValue.text.toString().toDouble() * RATIO_POUND_TO_KILOGRAMS
 
-            UNIT_OUNCE_SHORT + FORMAT_LIST + UNIT_OUNCE -> return etValue.text.toString().toDouble() * RATIO_OUNCE_TO_KILOGRAMS
+            UNIT_OUNCE_LIST_ITEM -> return etValue.text.toString().toDouble() * RATIO_OUNCE_TO_KILOGRAMS
 
-            UNIT_TON_SHORT + FORMAT_LIST + UNIT_TON -> return etValue.text.toString().toDouble() * RATIO_TON_TO_KILOGRAMS
+            UNIT_TON_LIST_ITEM -> return etValue.text.toString().toDouble() * RATIO_TON_TO_KILOGRAMS
 
         }
 
@@ -259,11 +250,11 @@ class ConversionActivity : AppCompatActivity(){
     {
         when(spConvertedUnit.selectedItem)
         {
-            UNIT_POUND_SHORT + FORMAT_LIST + UNIT_POUND -> return    conversionUnit / RATIO_POUND_TO_KILOGRAMS
+            UNIT_POUND_LIST_ITEM -> return    conversionUnit / RATIO_POUND_TO_KILOGRAMS
 
-            UNIT_OUNCE_SHORT + FORMAT_LIST + UNIT_OUNCE ->  return   conversionUnit / RATIO_OUNCE_TO_KILOGRAMS
+            UNIT_OUNCE_LIST_ITEM ->  return   conversionUnit / RATIO_OUNCE_TO_KILOGRAMS
 
-            UNIT_TON_SHORT + FORMAT_LIST + UNIT_TON -> return   conversionUnit / RATIO_TON_TO_KILOGRAMS
+            UNIT_TON_LIST_ITEM -> return   conversionUnit / RATIO_TON_TO_KILOGRAMS
         }
 
         return conversionUnit
@@ -273,9 +264,9 @@ class ConversionActivity : AppCompatActivity(){
     {
         when(spConversionUnit.selectedItem)
         {
-            UNIT_KELVIN_SHORT + FORMAT_LIST + UNIT_KELVIN -> return etValue.text.toString().toDouble() + ZERO_KELVIN_TO_CELSIUS
+            UNIT_KELVIN_LIST_ITEM -> return etValue.text.toString().toDouble() + ZERO_KELVIN_TO_CELSIUS
 
-            UNIT_FAHRENHEIT_SHORT + FORMAT_LIST + UNIT_FAHRENHEIT -> return (etValue.text.toString().toDouble() - FAHRENHEIT_FORMULA_VALUE2) / FAHRENHEIT_FORMULA_VALUE1
+            UNIT_FAHRENHEIT_LIST_ITEM -> return (etValue.text.toString().toDouble() - FAHRENHEIT_FORMULA_VALUE2) / FAHRENHEIT_FORMULA_VALUE1
 
         }
 
@@ -286,9 +277,9 @@ class ConversionActivity : AppCompatActivity(){
     {
         when(spConvertedUnit.selectedItem)
         {
-            UNIT_KELVIN_SHORT + FORMAT_LIST + UNIT_KELVIN -> return    conversionUnit - ZERO_KELVIN_TO_CELSIUS
+            UNIT_KELVIN_LIST_ITEM -> return    conversionUnit - ZERO_KELVIN_TO_CELSIUS
 
-            UNIT_FAHRENHEIT_SHORT + FORMAT_LIST + UNIT_FAHRENHEIT ->  return   conversionUnit * FAHRENHEIT_FORMULA_VALUE1 + FAHRENHEIT_FORMULA_VALUE2
+            UNIT_FAHRENHEIT_LIST_ITEM ->  return   conversionUnit * FAHRENHEIT_FORMULA_VALUE1 + FAHRENHEIT_FORMULA_VALUE2
 
         }
 
@@ -300,6 +291,17 @@ class ConversionActivity : AppCompatActivity(){
                 Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(
                 activity.currentFocus!!.windowToken, 0)
+    }
+
+    private fun setUpIntent(convertedUnit:Double, key:String, value:Double):Intent {
+
+        val resultIntent = Intent (this, ResultActivity::class.java)
+        resultIntent.putExtra(KEY_BUTTON_IDENTIFIER,key)
+        resultIntent.putExtra(KEY_INPUT_UNIT, spConversionUnit.selectedItem.toString())
+        resultIntent.putExtra(KEY_OUTPUT_UNIT, spConvertedUnit.selectedItem.toString())
+        resultIntent.putExtra(KEY_INPUT_VALUE, value)
+        resultIntent.putExtra(KEY_OUTPUT_VALUE, convertedUnit)
+        return resultIntent
     }
 
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/speed"
+    tools:background="@color/speed"
     android:id="@+id/clConversionActivity"
     tools:context=".Activities.ConversionActivity">
 
@@ -37,11 +37,11 @@
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/etValue"
+        app:layout_constraintBottom_toTopOf="@id/etValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvConversionTitle" />
+        app:layout_constraintTop_toBottomOf="@id/tvConversionTitle" />
 
     <EditText
         android:id="@+id/etValue"
@@ -57,10 +57,10 @@
         android:textColor="@color/textColor"
         android:textColorHint="@color/textColor"
         android:hint="@string/evPromptText"
-        app:layout_constraintBottom_toTopOf="@+id/spConvertedUnit"
+        app:layout_constraintBottom_toTopOf="@id/spConvertedUnit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spConversionUnit" />
+        app:layout_constraintTop_toBottomOf="@id/spConversionUnit" />
 
     <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/spConvertedUnit"
@@ -72,11 +72,11 @@
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnConvert"
+        app:layout_constraintBottom_toTopOf="@id/btnConvert"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etValue" />
+        app:layout_constraintTop_toBottomOf="@id/etValue" />
 
     <Button
         android:id="@+id/btnConvert"
@@ -88,13 +88,13 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textColor="@color/speed"
+        tools:textColor="@color/speed"
         android:background="@drawable/round_button"
         android:text="@string/btnConvertTxt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spConvertedUnit" />
+        app:layout_constraintTop_toBottomOf="@id/spConvertedUnit" />
 
 
 </android.support.constraint.ConstraintLayout>
