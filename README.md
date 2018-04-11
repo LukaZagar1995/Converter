@@ -1,10 +1,10 @@
 # Converter
 
 # Main Activity
-<**[Button name]**>.setOnClickListener{
-            val intent = Intent (this, <**[Name of activity you want to go to]**>::class.java)
-            intent.putExtra(KEY_BUTTON_IDENTIFIER, KEY_SPEED)
-            startActivity(intent)
+<**[Button name]**>.setOnClickListener{_
+            val intent = Intent (this, <**[Name of activity you want to go to]**>::class.java)_
+            intent.putExtra(KEY_BUTTON_IDENTIFIER, KEY_SPEED)_
+            startActivity(intent)_
         }
 
 ## Screenshots
