@@ -3,4 +3,4 @@
 
 
 ## Main Menu 
-![](https://github.com/LukaZagar1995/Converter/blob/master/IzgledAplikacije/MainMenu.jpg =100x300)
+![](https://github.com/LukaZagar1995/Converter/blob/master/IzgledAplikacije/MainMenu.jpg)
